@@ -19,6 +19,14 @@
     <h3>Competitions:</h3>
     <ul>
         {% for comp in competitions%}
+        {% if datetime.datetime.strptime(comp['date'], "%Y-%m-%d %H:%M:%S") <= datetime.datetime.now() %}
+        <li>
+            {{comp['name']}}<br />
+            Date: {{comp['date']}}</br>
+            Number of Places: {{comp['numberOfPlaces']}}</br>
+            This competition is post-dated, you can't book a place.
+        </li>
+        {% else %}
         <li>
             {{comp['name']}}<br />
             Date: {{comp['date']}}</br>
@@ -27,6 +35,7 @@
             <a href="{{ url_for('book',competition=comp['name'],club=club['name']) }}">Book Places</a>
             {%endif%}
         </li>
+        {% endif %}
         <hr />
         {% endfor %}
     </ul>
