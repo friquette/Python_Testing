@@ -52,11 +52,14 @@ def showSummary():
 def book(competition, club):
     foundClub = [c for c in clubs if c['name'] == club][0]
     foundCompetition = [c for c in competitions if c['name'] == competition][0]
+    club_points = int(foundClub['points'])
+
     if foundClub and foundCompetition:
         return render_template(
             'booking.html',
             club=foundClub,
-            competition=foundCompetition
+            competition=foundCompetition,
+            club_points=club_points
         )
     else:
         flash("Something went wrong-please try again")
