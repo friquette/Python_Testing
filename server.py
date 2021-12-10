@@ -1,7 +1,10 @@
 import json
 import datetime
+import math
 
 from flask import Flask, render_template, request, redirect, flash, url_for
+
+POINTS_PER_PLACES = 3
 
 
 def loadClubs():
@@ -56,13 +59,22 @@ def book(competition, club):
     foundClub = [c for c in clubs if c['name'] == club][0]
     foundCompetition = [c for c in competitions if c['name'] == competition][0]
     club_points = int(foundClub['points'])
+    max_places_from_comp = int(foundCompetition['numberOfPlaces'])
+    max_places_from_points = math.floor(club_points / POINTS_PER_PLACES)
+
+    if max_places_from_comp > 12 and max_places_from_points > 12:
+        places = 12
+    elif max_places_from_points <= max_places_from_comp:
+        places = max_places_from_points
+    elif max_places_from_points > max_places_from_comp:
+        places = max_places_from_comp
 
     if foundClub and foundCompetition:
         return render_template(
             'booking.html',
             club=foundClub,
             competition=foundCompetition,
-            club_points=club_points
+            places=places
         )
     else:
         flash("Something went wrong-please try again")
