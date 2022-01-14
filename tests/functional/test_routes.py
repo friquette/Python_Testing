@@ -91,9 +91,3 @@ def test_points_display_route(client):
     assert response.status_code == 200
     data = response.data.decode()
     assert "Number of Points:" in data
-
-
-"""test d'intégration:
-load clubs, load competition, index, summary, book, purchase, logout"""
-
-"""détailler pourquoi max place"""
