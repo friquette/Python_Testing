@@ -57,23 +57,12 @@ def create_app(config):
     def book(competition, club):
         foundClub = [c for c in clubs if c['name'] == club][0]
         foundCompetition = [c for c in competitions if c['name'] == competition][0]  # noqa
-        club_points = int(foundClub['points'])
-        max_places_from_comp = int(foundCompetition['numberOfPlaces'])
-        max_places_from_points = math.floor(club_points / POINTS_PER_PLACES)
-
-        if max_places_from_comp > 12 and max_places_from_points > 12:
-            places = 12
-        elif max_places_from_points <= max_places_from_comp:
-            places = max_places_from_points
-        elif max_places_from_points > max_places_from_comp:
-            places = max_places_from_comp
 
         if foundClub and foundCompetition:
             return render_template(
                 'booking.html',
                 club=foundClub,
-                competition=foundCompetition,
-                places=places
+                competition=foundCompetition
             )
         else:
             flash("Something went wrong-please try again")
@@ -89,13 +78,38 @@ def create_app(config):
         club = [c for c in clubs if c['name'] == request.form['club']][0]
 
         placesRequired = int(request.form['places'])
-        competition['numberOfPlaces'] = int(
-            competition['numberOfPlaces']
-        ) - placesRequired
 
-        club['points'] = int(club['points']) - placesRequired
+        if placesRequired > 12:
+            flash("You can't purchase more than 12 places for a competition")
+            return render_template(
+                'booking.html',
+                club=club,
+                competition=competition
+            )
+        elif (placesRequired * POINTS_PER_PLACES) > int(club['points']):
+            flash("You don't have enough points")
+            return render_template(
+                'booking.html',
+                club=club,
+                competition=competition
+            )
+        elif placesRequired > int(competition['numberOfPlaces']):
+            flash("Not enough places available in this competition")
+            return render_template(
+                'booking.html',
+                club=club,
+                competition=competition
+            )
+
+        competition['numberOfPlaces'] = str(
+            int(competition['numberOfPlaces']) - placesRequired
+        )
+
+        club['points'] = str(
+            int(club['points']) - (placesRequired * POINTS_PER_PLACES)
+        )
+
         flash('Great-booking complete!')
-
         return render_template(
             'welcome.html',
             club=club,

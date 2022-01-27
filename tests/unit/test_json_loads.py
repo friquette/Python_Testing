@@ -53,9 +53,3 @@ def test_load_competitions():
         }
     ]
     assert competitions_list == competitions
-
-
-"""test d'intégration:
-load clubs, load competition, index, summary, book, purchase, logout"""
-
-"""détailler pourquoi max place"""
