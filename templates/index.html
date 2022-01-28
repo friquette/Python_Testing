@@ -7,6 +7,10 @@
 <body>
     <h1>Welcome to the GUDLFT Registration Portal!</h1>
 
+    <div>
+        <a href="{{url_for('pointsDisplay')}}">Clubs</a><br/>
+    </div>
+
     {% with messages = get_flashed_messages() %}
     {% if messages %}
         <ul>

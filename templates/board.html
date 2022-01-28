@@ -5,8 +5,6 @@
     <title>Summary | GUDLFT Registration</title>
 </head>
 <body>
-        <a href="javascript:history.back()">Clubs</a> | <a href="{{url_for('logout')}}">Logout</a>
-
     {% with messages = get_flashed_messages()%}
     {% if messages %}
         <ul>
@@ -27,6 +25,5 @@
         {% endfor %}
     </ul>
     {%endwith%}
-
 </body>
 </html>
