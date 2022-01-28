@@ -116,13 +116,11 @@ def create_app(config):
             datetime=datetime
         )
 
-    @app.route('/pointsDisplay/<club>')
-    def pointsDisplay(club):
-        current_club = [c for c in clubs if c['name'] == club][0]
+    @app.route('/pointsDisplay')
+    def pointsDisplay():
         return render_template(
             'board.html',
-            clubs=clubs,
-            current_club=current_club
+            clubs=clubs
         )
 
     @app.route('/logout')
